@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="root">
+        <item>C</item>
+        <item>Db</item>
+        <item>D</item>
+        <item>Eb</item>
+        <item>E</item>
+        <item>F</item>
+        <item>Gb</item>
+        <item>G</item>
+        <item>Ab</item>
+        <item>A</item>
+        <item>Bb</item>
+        <item>B</item>
+    </string-array>
+    <string-array name="scale">
+    	<item></item>
+    	<item>m</item>
+    	<item>dim</item>
+    	<item>aug</item>
+    	<item>5</item>
+    </string-array>
+    <string-array name="extra">
+    	<item></item>
+    	<item>7</item>
+    	<item>maj7</item>
+    	<item>sus4</item>
+    	<item>sus2</item>
+    </string-array>
+    
+    <string-array name="instrument">
+    	<item>Guitar, standard</item>
+    	<item>Ukulele, GCEA</item>
+    </string-array>
+</resources>
