@@ -52,6 +52,27 @@ public class ChordDroid extends Activity implements OnItemSelectedListener {
         s_scale.setOnItemSelectedListener(this);
         s_extra.setOnItemSelectedListener(this);
         
+        // restore old bundle data
+        setSpinner(s_instrument, savedInstanceState, "instrument");
+        setSpinner(s_root, savedInstanceState, "root");
+        setSpinner(s_scale, savedInstanceState, "scale");
+        setSpinner(s_extra, savedInstanceState, "extra");
+    }
+    
+    private void setSpinner(Spinner s, Bundle b, String key) {
+    	if (b != null && b.containsKey(key)) {
+    		int pos = b.getInt(key);
+    		s.setSelection(pos);
+    	}
+    }
+    
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+    	super.onSaveInstanceState(outState);
+    	outState.putInt("instrument", s_instrument.getSelectedItemPosition());
+    	outState.putInt("root", s_root.getSelectedItemPosition());
+    	outState.putInt("scale", s_scale.getSelectedItemPosition());
+    	outState.putInt("extra", s_extra.getSelectedItemPosition());
     }
     
     public String getSelectedChord() {
