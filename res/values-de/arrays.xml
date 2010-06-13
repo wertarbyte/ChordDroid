@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="instrument">
+    	<item>Gitarre, Standard</item>
+    	<item>Ukulele, GCEA</item>
+    </string-array>
+</resources>

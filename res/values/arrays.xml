@@ -34,9 +34,4 @@
     	<item>Ukulele, GCEA</item>
     </string-array>
     
-    <integer-array name="instrument_files">
-    	<item>@raw/guitar_standard</item>
-    	<item>@raw/ukulele_gcea</item>
-    </integer-array>
-    
 </resources>
