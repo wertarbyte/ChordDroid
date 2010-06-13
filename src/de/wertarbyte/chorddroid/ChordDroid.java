@@ -1,6 +1,7 @@
 package de.wertarbyte.chorddroid;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -11,14 +12,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class ChordDroid extends Activity implements OnItemSelectedListener {
-	private ChordDB db;
+public class ChordDroid extends Activity implements OnItemSelectedListener {	
+	private List<Instrument> instruments;
 	
 	private Spinner s_instrument;
-	
 	private Spinner s_root;
 	private Spinner s_scale;
 	private Spinner s_extra;
+	
 	private ChordView chordView;
 	
     /** Called when the activity is first created. */
@@ -26,7 +27,16 @@ public class ChordDroid extends Activity implements OnItemSelectedListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-		db = new ChordDB();
+        instruments = new ArrayList<Instrument>(4);
+        
+		// load known instruments
+        for (int id : new int[]{R.raw.guitar_standard, R.raw.ukulele_gcea}) {
+			try {
+				instruments.add(new Instrument(getResources(), id));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 
        setContentView(R.layout.main);
        
@@ -52,41 +62,19 @@ public class ChordDroid extends Activity implements OnItemSelectedListener {
     	return sb.toString();
     }
     
-    private void loadDatabase(int pos) {
-		int rid = -1;
-		switch (pos) {
-			case 0:
-				rid = R.raw.guitar_standard;
-				break;
-			case 1:
-				rid = R.raw.ukulele_gcea;
-				break;
-
-			default:
-				break;
-		}
-		if (rid != -1) {
-			try {
-				db.loadDatabase(getResources(), rid);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}    	
+    public Instrument getSelectedInstrument() {
+    	int pos = s_instrument.getSelectedItemPosition();
+    	return instruments.get(pos);
     }
 
 	public void onItemSelected(AdapterView<?> sender, View v, int pos, long id) {
-		if ( sender == s_instrument) {
-			int p = s_instrument.getSelectedItemPosition();
-			loadDatabase(p);
-		}
-		
 		TextView t = (TextView) findViewById(R.id.chordname);
 		
 		String selChord = getSelectedChord();
 		
 		chordView.setShape(null);
 		t.setText("-");
-		List<Shape> shapes = db.lookup(selChord);
+		List<Shape> shapes = getSelectedInstrument().lookup(selChord);
 		// for now, we just use the first chord shape
 		if (shapes != null && shapes.size() > 0) {
 			chordView.setShape(shapes.get(0));

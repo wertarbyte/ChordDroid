@@ -14,15 +14,16 @@ import java.util.List;
 
 import android.content.res.Resources;
 
-public class ChordDB {
+public class Instrument {
 	
 	private HashMap<String, List<Shape>> shape;
 	
-	public ChordDB() {
+	public Instrument(Resources resources, int resourceID) throws IOException {
 		shape = new HashMap<String, List<Shape>>();
+		loadDatabase(resources, resourceID);
 	}
 	
-	public void loadDatabase(Resources resources, int resourceID) throws IOException {
+	private void loadDatabase(Resources resources, int resourceID) throws IOException {
 		shape.clear();
 		// load chord shapes from resource
 		InputStream is = resources.openRawResource(resourceID);
