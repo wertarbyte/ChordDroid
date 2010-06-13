@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,12 +28,15 @@ public class ChordDroid extends Activity implements OnItemSelectedListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        instruments = new ArrayList<Instrument>(4);
-        
 		// load known instruments
-        for (int id : new int[]{R.raw.guitar_standard, R.raw.ukulele_gcea}) {
+        TypedArray instr = getResources().obtainTypedArray(R.array.instrument_files);
+        
+        instruments = new ArrayList<Instrument>(instr.length());
+        
+        for (int i = 0; i < instr.length(); i++) {
+			int rid = instr.getResourceId(i, -1);
 			try {
-				instruments.add(new Instrument(getResources(), id));
+				instruments.add(new Instrument(getResources(), rid));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
