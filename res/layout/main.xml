@@ -12,10 +12,8 @@
 		<Spinner android:id="@+id/extra" android:entries="@array/extra" android:addStatesFromChildren="false" android:layout_height="wrap_content" android:saveEnabled="true" android:layout_weight="1" android:layout_width="fill_parent"/>
 	</LinearLayout>
 	
-	<TextView android:id="@+id/chordname" android:visibility="invisible"
-		android:layout_height="wrap_content" android:layout_width="fill_parent" android:lines="1" android:text="-" android:textSize="12pt" android:typeface="normal"/>
-	
-	<LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent"> 
+	<LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent">
+		<TextView android:text="-" android:id="@+id/variant" android:layout_width="fill_parent" android:layout_height="wrap_content"/> 
 		<de.wertarbyte.chorddroid.ChordView
 			android:id="@+id/chordview"
 			android:layout_width="fill_parent"

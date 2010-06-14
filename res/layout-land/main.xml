@@ -14,7 +14,7 @@
 				android:entries="@array/scale" android:addStatesFromChildren="false" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1"/>
 			<Spinner android:id="@+id/extra"
 				android:entries="@array/extra" android:addStatesFromChildren="false" android:layout_height="wrap_content" android:saveEnabled="true" android:layout_weight="1" android:layout_width="fill_parent"/>
-			<TextView android:id="@+id/chordname" android:visibility="invisible"
+			<TextView android:id="@+id/variant"
 				android:layout_height="wrap_content" android:layout_width="fill_parent" android:lines="1" android:text="-" android:textSize="12pt" android:typeface="normal"/>
 		</LinearLayout>
 			

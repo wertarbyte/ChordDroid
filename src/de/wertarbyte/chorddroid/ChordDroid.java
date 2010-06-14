@@ -8,12 +8,14 @@ import android.app.Activity;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class ChordDroid extends Activity implements OnItemSelectedListener {	
+public class ChordDroid extends Activity implements OnItemSelectedListener, OnClickListener, OnLongClickListener {	
 	private List<Instrument> instruments;
 	
 	private Spinner s_instrument;
@@ -22,11 +24,15 @@ public class ChordDroid extends Activity implements OnItemSelectedListener {
 	private Spinner s_extra;
 	
 	private ChordView chordView;
+	private TextView t_variant;
+	
+	private int chord_variant;
 	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        chord_variant = 0;
         
 		// load known instruments
         TypedArray instr = getResources().obtainTypedArray(R.array.instrument_files);
@@ -51,6 +57,8 @@ public class ChordDroid extends Activity implements OnItemSelectedListener {
         s_scale = (Spinner) findViewById(R.id.scale);
         s_extra = (Spinner) findViewById(R.id.extra);
         
+        t_variant = (TextView) findViewById(R.id.variant);
+        
         s_instrument.setOnItemSelectedListener(this);
         s_root.setOnItemSelectedListener(this);
         s_scale.setOnItemSelectedListener(this);
@@ -61,6 +69,10 @@ public class ChordDroid extends Activity implements OnItemSelectedListener {
         setSpinner(s_root, savedInstanceState, "root");
         setSpinner(s_scale, savedInstanceState, "scale");
         setSpinner(s_extra, savedInstanceState, "extra");
+        
+        chordView.setClickable(true);
+        chordView.setOnClickListener(this);
+        chordView.setOnLongClickListener(this);
     }
     
     private void setSpinner(Spinner s, Bundle b, String key) {
@@ -93,20 +105,43 @@ public class ChordDroid extends Activity implements OnItemSelectedListener {
     }
 
 	public void onItemSelected(AdapterView<?> sender, View v, int pos, long id) {
-		TextView t = (TextView) findViewById(R.id.chordname);
-		
+		chord_variant = 0;
+		refresh_shape();
+	}
+	
+	public List<Shape> getShapes() {
 		String selChord = getSelectedChord();
-		
-		chordView.setShape(null);
-		t.setText("-");
 		List<Shape> shapes = getSelectedInstrument().lookup(selChord);
-		// for now, we just use the first chord shape
+		return shapes;
+	}
+	
+	public void refresh_shape() {
+		chordView.setShape(null);
+		List<Shape> shapes = getShapes();
+		t_variant.setText(getSelectedChord()+": "+(chord_variant+1)+"/"+shapes.size());
 		if (shapes != null && shapes.size() > 0) {
-			chordView.setShape(shapes.get(0));
-			t.setText(shapes.get(0).toString());
-		}	
+			chordView.setShape( shapes.get(chord_variant) );
+		}
 	}
 
 	public void onNothingSelected(AdapterView<?> v) {}
+
+	public void onClick(View src) {
+		if (src == chordView) {
+			// advance to next chord variant
+			chord_variant++;
+			chord_variant %= getShapes().size();
+			refresh_shape();
+		}
+	}
+
+	public boolean onLongClick(View src) {
+		if (src == chordView) {
+			chord_variant = 0;
+			refresh_shape();
+			return true;
+		}
+		return false;
+	}
     
 }
