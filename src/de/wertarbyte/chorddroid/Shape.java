@@ -51,8 +51,14 @@ public class Shape {
 		int r=-2;
 		for (int i = 0; i < pos.length; i++) {
 			int p = pos[i];
-			if (r == -2 || r > p) {
+			if (r == -2) {
+				// the counter has not been touched yet, we accept any value
 				r = p;
+			} else {
+				// ignore open (0) and muted (-1) strings
+				if (p>0 && (r<1 || p < r)) {
+					r = p;
+				}
 			}
 		}
 		return r;

@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 public class ChordView extends View {
@@ -45,6 +46,9 @@ public class ChordView extends View {
 		
 		// number of frets we need
 		int frets = Math.max(4, (chordshape.getMaxPos()-Math.max(chordshape.getMinPos(), 1)) );
+		Log.i("chord", chordshape.toString());
+		Log.i("chord", "minpos: "+chordshape.getMinPos());
+		Log.i("chord", "frets needed: "+frets);
 		
 		float d_w = size/(frets+1);
 		float d_h = size/(n+1);
