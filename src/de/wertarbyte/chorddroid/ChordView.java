@@ -15,10 +15,28 @@ import android.view.View;
 public class ChordView extends View {
 	
 	private Shape chordshape;
+	private Paint fretPaint;
+	private Paint dotPaint;
+	private Paint stringPaint;
 	
 	public ChordView(Context context, AttributeSet as) {
 		super(context, as);
 		chordshape = null;
+		
+		stringPaint = new Paint();
+		stringPaint.setColor(Color.WHITE);
+		stringPaint.setStrokeWidth(4);
+		stringPaint.setAntiAlias(true);
+		
+		fretPaint = new Paint();
+		fretPaint.setColor(Color.WHITE);
+		fretPaint.setStrokeWidth(2);
+		fretPaint.setTextSize(24);
+		fretPaint.setAntiAlias(true);
+		
+		dotPaint = new Paint();
+		dotPaint.setColor(Color.WHITE);
+		dotPaint.setAntiAlias(true);
 	}
 	
 	public void setShape(Shape chordshape) {
@@ -53,23 +71,14 @@ public class ChordView extends View {
 		float d_w = size/(frets+1);
 		float d_h = size/(n+1);
 		
-		Paint string_paint = new Paint();
-		string_paint.setColor(Color.WHITE);
-		string_paint.setStrokeWidth(4);
-		
-		Paint fret_paint = new Paint();
-		fret_paint.setColor(Color.WHITE);
-		string_paint.setStrokeWidth(2);
-
-		fret_paint.setTextSize(24);
-		c.drawText(Math.max(chordshape.getMinPos(), 1)+"", d_w*0.5f, d_h*0.5f , fret_paint);
+		c.drawText(Math.max(chordshape.getMinPos(), 1)+"", d_w*0.5f, d_h*0.5f , fretPaint);
 
 		for (int i = n; i>0;  i--) {
-			c.drawLine(0, d_h*i, size, d_h*i, string_paint);
+			c.drawLine(0, d_h*i, size, d_h*i, stringPaint);
 		}
 		
 		for (int i = frets; i>0; i--) {
-			c.drawLine(d_w*i, d_h*0.75f, d_w*i, d_h*(pos.length+0.25f), string_paint);
+			c.drawLine(d_w*i, d_h*0.75f, d_w*i, d_h*(pos.length+0.25f), stringPaint);
 		}
 		
 		for (int string = 0; string < pos.length; string++) {
@@ -78,13 +87,13 @@ public class ChordView extends View {
 			if (fret > 0) {
 				float c_x = d_w * ((float)fret+0.5f-1f);
 				float c_y = d_h * (1f+(float)string);
-				c.drawCircle( c_x, c_y, r, fret_paint);
+				c.drawCircle( c_x, c_y, r, fretPaint);
 			} else if (fret <0) {
 				// paint markers on muted strings 
 				float c_x = d_w * 0.5f;
 				float c_y = d_h * (1f+(float)string);
-				c.drawLine(c_x-r, c_y-r, c_x+r, c_y+r, string_paint);
-				c.drawLine(c_x-r, c_y+r, c_x+r, c_y-r, string_paint);
+				c.drawLine(c_x-r, c_y-r, c_x+r, c_y+r, stringPaint);
+				c.drawLine(c_x-r, c_y+r, c_x+r, c_y-r, stringPaint);
 			}
 		}
 		
