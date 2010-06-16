@@ -18,6 +18,7 @@ public class ChordView extends View {
 	private Paint fretPaint;
 	private Paint dotPaint;
 	private Paint stringPaint;
+	private Paint nutPaint;
 	
 	public ChordView(Context context, AttributeSet as) {
 		super(context, as);
@@ -33,6 +34,12 @@ public class ChordView extends View {
 		fretPaint.setStrokeWidth(2);
 		fretPaint.setTextSize(24);
 		fretPaint.setAntiAlias(true);
+		
+		nutPaint = new Paint();
+		nutPaint.setColor(Color.WHITE);
+		nutPaint.setStrokeWidth(8);
+		nutPaint.setAntiAlias(true);
+
 		
 		dotPaint = new Paint();
 		dotPaint.setColor(Color.WHITE);
@@ -62,16 +69,31 @@ public class ChordView extends View {
 		int[] pos = chordshape.getPositions();
 		int n = pos.length;
 		
-		// number of frets we need
-		int frets = Math.max(4, (chordshape.getMaxPos()-Math.max(chordshape.getMinPos(), 1)) );
+		// the last fret used by this shape: A shape consisting only of muted and open strings will display at least one fret
+		int last_fret = Math.max(1, chordshape.getMaxPos());
+		// the first fret used by this shape, excluding open strings
+		int first_fret = Math.max(1, chordshape.getMinPos());
+		
+		// we will display at least 4 frets, so we expand the range
+		while ( 1+(last_fret-first_fret) < 4) {
+			if (first_fret > 1) {
+				first_fret--;
+			} else {
+				last_fret++;
+			}
+		}
+		
+		int frets = 1+(last_fret-first_fret);
+		
 		Log.i("chord", chordshape.toString());
 		Log.i("chord", "minpos: "+chordshape.getMinPos());
 		Log.i("chord", "frets needed: "+frets);
 		
-		float d_w = size/(frets+1);
+		float d_w = size/(frets);
 		float d_h = size/(n+1);
 		
-		c.drawText(Math.max(chordshape.getMinPos(), 1)+"", d_w*0.5f, d_h*0.5f , fretPaint);
+		// label the first fret
+		c.drawText(first_fret+"", d_w*0.5f, d_h*0.5f , fretPaint);
 
 		for (int i = n; i>0;  i--) {
 			c.drawLine(0, d_h*i, size, d_h*i, stringPaint);
@@ -80,12 +102,17 @@ public class ChordView extends View {
 		for (int i = frets; i>0; i--) {
 			c.drawLine(d_w*i, d_h*0.75f, d_w*i, d_h*(pos.length+0.25f), stringPaint);
 		}
+		if (first_fret == 1) {
+			c.drawLine(d_w*0+nutPaint.getStrokeWidth()/2, d_h*0.75f, d_w*0+nutPaint.getStrokeWidth()/2, d_h*(pos.length+0.25f), nutPaint);
+		}
 		
 		for (int string = 0; string < pos.length; string++) {
 			int fret = pos[pos.length-string-1];
+			// fret position relative to the fretboard position
+			int rel_fret = fret - first_fret;
 			float r = d_w/4f;
 			if (fret > 0) {
-				float c_x = d_w * ((float)fret+0.5f-1f);
+				float c_x = d_w * ((float)rel_fret+0.5f);
 				float c_y = d_h * (1f+(float)string);
 				c.drawCircle( c_x, c_y, r, fretPaint);
 			} else if (fret <0) {
