@@ -34,11 +34,14 @@ public class Instrument {
 			// ignore the first line, which contains the instrument name and its tuning
 			if (n++ > 0) {
 				String[] fields = line.split("[[:space:]]+");
+				String key = fields[0];
+				// TODO for now, we ignore the base note (slash chords) 
+				key = key.replaceFirst("/[A-G][b#]?$", "");
 				
-				if (! this.shape.containsKey(fields[0])) {
-					shape.put(fields[0], new LinkedList<Shape>());
+				if (! this.shape.containsKey(key)) {
+					shape.put(key, new LinkedList<Shape>());
 				}
-				List<Shape> list = shape.get(fields[0]);
+				List<Shape> list = shape.get(key);
 				
 				// a chord might have multiple shapes
 				for (int i = 1; i < fields.length; i++) {
