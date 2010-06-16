@@ -8,12 +8,14 @@ public class Shape {
 	private final static int MUTE = -1;
 	
 	private final int[] pos;
+	private final String label;
 	
-	public Shape(int... p) {
+	public Shape(String label, int... p) {
 		pos = p;
+		this.label = label;
 	}
 	
-	public static Shape createShape(String shape) {
+	public static Shape createShape(String label, String shape) {
 		String[] f = shape.split("-");
 		int[] p = new int[f.length];
 		for (int i = 0; i < f.length; i++) {
@@ -24,11 +26,15 @@ public class Shape {
 				p[i] = Integer.parseInt(c);
 			}
 		}
-		return new Shape(p);
+		return new Shape(label, p);
 	}
 
 	public int[] getPositions() {
 		return pos;
+	}
+	
+	public String getLabel() {
+		return label;
 	}
 	
 	@Override
