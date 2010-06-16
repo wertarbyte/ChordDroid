@@ -117,9 +117,10 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 	
 	public void refresh_shape() {
 		chordView.setShape(null);
+		t_variant.setText(getSelectedChord()+": -");
 		List<Shape> shapes = getShapes();
-		t_variant.setText(getSelectedChord()+": "+(chord_variant+1)+"/"+shapes.size());
 		if (shapes != null && shapes.size() > 0) {
+			t_variant.setText(getSelectedChord()+": "+(chord_variant+1)+"/"+shapes.size());
 			chordView.setShape( shapes.get(chord_variant) );
 		}
 	}
@@ -129,9 +130,11 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 	public void onClick(View src) {
 		if (src == chordView) {
 			// advance to next chord variant
-			chord_variant++;
-			chord_variant %= getShapes().size();
-			refresh_shape();
+			if (getShapes() != null) {
+				chord_variant++;
+				chord_variant %= getShapes().size();
+				refresh_shape();
+			}
 		}
 	}
 
