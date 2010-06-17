@@ -28,12 +28,4 @@
     	<item>sus4</item>
     	<item>sus2</item>
     </string-array>
-    
-    <string-array name="instrument">
-    	<item>Guitar, standard</item>
-    	<item>Ukulele, GCEA</item>
-    	<item>Guitar, Drop-D</item>
-    	<item>Ukulele, Baritone</item>
-    </string-array>
-    
 </resources>
