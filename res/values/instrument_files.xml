@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer-array name="instrument_files">
-    	<item>@raw/guitar_standard</item>
-    	<item>@raw/ukulele_gcea</item>
-    </integer-array>    
+    <array name="instrument_dirs">
+    	<item>guitar_standard</item>
+    	<item>ukulele_gcea</item>
+    </array>    
 </resources>

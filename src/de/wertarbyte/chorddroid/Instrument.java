@@ -8,25 +8,29 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import android.content.res.Resources;
+import android.content.res.AssetManager;
 
 public class Instrument {
 	
-	private HashMap<String, List<Shape>> shape;
-	
-	public Instrument(Resources resources, int resourceID) throws IOException {
-		shape = new HashMap<String, List<Shape>>();
-		loadDatabase(resources, resourceID);
+	private String name;
+	private AssetManager assets;
+
+	public Instrument(AssetManager assets, String name) throws IOException {
+		this.name = name;
+		this.assets = assets;
 	}
 	
-	private void loadDatabase(Resources resources, int resourceID) throws IOException {
-		shape.clear();
+	private List<Shape> loadDatabase(String name, String chord) throws IOException {
+		List<Shape> result = new LinkedList<Shape>();
 		// load chord shapes from resource
-		InputStream is = resources.openRawResource(resourceID);
+		InputStream is = assets.open("chords/"+name+"/"+chord);
+		if (is == null) {
+			return result;
+		}
+		
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		String line = null;
 		int n = 0;
@@ -34,27 +38,31 @@ public class Instrument {
 			// ignore the first line, which contains the instrument name and its tuning
 			if (n++ > 0) {
 				String[] fields = line.split("[[:space:]]+");
-				String chord = fields[0];
+				String realchord = fields[0];
 				// TODO for now, we ignore the base note (slash chords) 
 				String key = chord.replaceFirst("/[A-G][b#]?$", "");
 				
-				if (! this.shape.containsKey(key)) {
-					shape.put(key, new LinkedList<Shape>());
-				}
-				List<Shape> list = shape.get(key);
-				
-				// a chord might have multiple shapes
-				for (int i = 1; i < fields.length; i++) {
-					String shape = fields[i];
-					Shape s = Shape.createShape(chord, shape);
-					list.add(s);
+				if (key.equals(chord)) {
+					// a chord might have multiple shapes
+					for (int i = 1; i < fields.length; i++) {
+						String shape = fields[i];
+						Shape s = Shape.createShape(realchord, shape);
+						result.add(s);
+					}
 				}
 			}
 		}
 		is.close();
+		return result;
 	}
 	
 	public List<Shape> lookup(String chord) {
-		return shape.get(chord);
+		try {
+			return loadDatabase(name, chord);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new LinkedList<Shape>();
 	}
 }
