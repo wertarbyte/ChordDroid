@@ -27,11 +27,14 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 	
 	private int chord_variant;
 	
+	private List<Shape> currentShapes;
+	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         chord_variant = 0;
+        currentShapes = new ArrayList<Shape>();
         
 		// load known instruments
         String[] instr = getResources().getStringArray(R.array.instrument_dirs);
@@ -104,13 +107,12 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 
 	public void onItemSelected(AdapterView<?> sender, View v, int pos, long id) {
 		chord_variant = 0;
+		currentShapes = getSelectedInstrument().lookup(getSelectedChord());
 		refresh_shape();
 	}
 	
 	public List<Shape> getShapes() {
-		String selChord = getSelectedChord();
-		List<Shape> shapes = getSelectedInstrument().lookup(selChord);
-		return shapes;
+		return currentShapes;
 	}
 	
 	public void refresh_shape() {
