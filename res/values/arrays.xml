@@ -32,6 +32,7 @@
     <string-array name="instrument">
     	<item>Guitar, standard</item>
     	<item>Ukulele, GCEA</item>
+    	<item>Guitar, Drop-D</item>
     </string-array>
     
 </resources>
