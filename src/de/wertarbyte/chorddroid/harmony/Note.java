@@ -6,7 +6,7 @@ package de.wertarbyte.chorddroid.harmony;
 
 
 
-public class Note implements Transposable<Note> {
+public class Note implements Transposable<Note>, Comparable<Note> {
 	private int pitch;
 	
 	private static final String[] NAMES = new String[] {"C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B" };
@@ -57,6 +57,10 @@ public class Note implements Transposable<Note> {
 
 	public Note transpose(int steps) {
 		return new Note(pitch+steps);
+	}
+
+	public int compareTo(Note n) {
+		return new Integer(pitch).compareTo(n.pitch);
 	}
 	
 }
