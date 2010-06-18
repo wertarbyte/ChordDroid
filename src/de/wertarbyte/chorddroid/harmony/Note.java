@@ -18,7 +18,7 @@ public class Note implements Transposable<Note>, Comparable<Note> {
 	public static Note lookup(String name) {
 		int p = 0;
 		for (String s : NAMES) {
-			if (s.equals(name)) {
+			if (s.toLowerCase().equals(name.toLowerCase())) {
 				return new Note(p);
 			}
 			p++;
@@ -60,7 +60,11 @@ public class Note implements Transposable<Note>, Comparable<Note> {
 	}
 
 	public int compareTo(Note n) {
-		return new Integer(getNormalizedPitch()).compareTo(n.getNormalizedPitch());
+		return new Integer(pitch).compareTo(n.pitch);
+	}
+	
+	public int getHalfStepsTo(Note n) {
+		return n.pitch - pitch;
 	}
 	
 }

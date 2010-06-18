@@ -17,40 +17,35 @@ public class Chord implements Polynote<Chord> {
 	private Set<Integer> offsets;
 	private String name;
 	
-	private final static Pattern CHORD_RE = Pattern.compile("^([a-gA-G][b]?)(|m|aug|dim|5)(6|7)?(/([a-gA-G][b]?))?$");
+	private final static Pattern CHORD_RE = Pattern.compile("^([a-g][b]?)(|m|aug|dim|5|sus[24])(6|7)?(/([a-g][b]?))?$");
+	
+	private void addComponentOffsets(ChordComponent cp) {
+		if (cp != null) {
+			for (int o : cp.getOffsets()) {
+				offsets.add(o);
+			}
+		}
+	}
 	
 	private Chord(String name) throws InvalidChordException {
-		Matcher m = CHORD_RE.matcher(name);
+		Matcher m = CHORD_RE.matcher(name.toLowerCase());
 		if (m.matches()) {
 			this.name = name;
 			root = Note.lookup(m.group(1));
 			offsets = new HashSet<Integer>();
-			String scale = m.group(2);
+			String triad = m.group(2);
 			String extra = m.group(3);
-			if ("".equals(scale)) {
-				offsets.add( Scale.MAJOR.getHalfSteps(3) );
-				offsets.add( Scale.MAJOR.getHalfSteps(5) );
-				if ("7".equals(extra)) {
-					offsets.add( Scale.MAJOR.getHalfSteps(7) );
-				} else if ("6".equals(extra)) {
-					offsets.add( Scale.MAJOR.getHalfSteps(6) );
-				}
-			} else if ("m".equals(scale)) {
-				offsets.add( Scale.MINOR.getHalfSteps(3) );
-				offsets.add( Scale.MINOR.getHalfSteps(5) );
-				if ("7".equals(extra)) {
-					offsets.add( Scale.MINOR.getHalfSteps(7) );
-				} else if ("6".equals(extra)) {
-					offsets.add( Scale.MINOR.getHalfSteps(6) );
-				}
-			} else if ("aug".equals(scale)) {
-				offsets.add(4);
-				offsets.add(8);
-			} else if ("dim".equals(scale)) {
-				offsets.add(3);
-				offsets.add(6);				
-			} else if ("5".equals(scale)) {
-				offsets.add( Scale.MAJOR.getHalfSteps(5) );
+			String base = m.group(5);
+			
+			addComponentOffsets(ChordComponent.getByString(triad));
+			addComponentOffsets(ChordComponent.getByString(extra));
+			
+			// add the additional base note
+			if (base != null) {
+				// transpose it down an octave
+				Note baseNote = Note.lookup(base).transpose(-12);
+				int difference = root.getHalfStepsTo(baseNote);
+				offsets.add(difference);
 			}
 		} else {
 			throw new InvalidChordException();
