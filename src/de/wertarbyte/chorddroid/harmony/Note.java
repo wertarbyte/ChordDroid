@@ -60,7 +60,7 @@ public class Note implements Transposable<Note>, Comparable<Note> {
 	}
 
 	public int compareTo(Note n) {
-		return new Integer(pitch).compareTo(n.pitch);
+		return new Integer(getNormalizedPitch()).compareTo(n.getNormalizedPitch());
 	}
 	
 }

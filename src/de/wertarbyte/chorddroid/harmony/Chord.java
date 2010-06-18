@@ -89,4 +89,13 @@ public class Chord implements Polynote<Chord> {
 		}
 		return r;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o.getClass().equals(getClass())) {
+			Chord other = (Chord) o;
+			return other.getNotes().containsAll(getNotes()) && getNotes().containsAll(other.getNotes());
+		}
+		return super.equals(o);
+	}
 }
