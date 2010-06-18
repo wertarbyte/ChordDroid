@@ -14,18 +14,19 @@
         <item>Bb</item>
         <item>B</item>
     </string-array>
-    <string-array name="scale">
+    <string-array name="triad">
     	<item></item>
     	<item>m</item>
     	<item>dim</item>
     	<item>aug</item>
+    	<item>sus2</item>
+    	<item>sus4</item>
     	<item>5</item>
     </string-array>
     <string-array name="extra">
     	<item></item>
+    	<item>6</item>
     	<item>7</item>
     	<item>maj7</item>
-    	<item>sus4</item>
-    	<item>sus2</item>
     </string-array>
 </resources>

@@ -10,8 +10,8 @@
 		<LinearLayout android:id="@+id/LinearLayout01" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="4">
 			<Spinner android:id="@+id/root"
 				android:entries="@array/root" android:addStatesFromChildren="false" android:layout_height="wrap_content" android:layout_weight="1" android:layout_width="fill_parent"/>
-			<Spinner android:id="@+id/scale"
-				android:entries="@array/scale" android:addStatesFromChildren="false" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1"/>
+			<Spinner android:id="@+id/triad"
+				android:entries="@array/triad" android:addStatesFromChildren="false" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1"/>
 			<Spinner android:id="@+id/extra"
 				android:entries="@array/extra" android:addStatesFromChildren="false" android:layout_height="wrap_content" android:saveEnabled="true" android:layout_weight="1" android:layout_width="fill_parent"/>
 			<TextView android:id="@+id/variant"

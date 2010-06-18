@@ -55,7 +55,7 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
        
         s_instrument = (Spinner) findViewById(R.id.instrument);
         s_root = (Spinner) findViewById(R.id.root);
-        s_scale = (Spinner) findViewById(R.id.scale);
+        s_scale = (Spinner) findViewById(R.id.triad);
         s_extra = (Spinner) findViewById(R.id.extra);
         
         t_variant = (TextView) findViewById(R.id.variant);
