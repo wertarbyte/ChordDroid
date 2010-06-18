@@ -3,6 +3,7 @@ package de.wertarbyte.chorddroid;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -19,7 +20,7 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 	
 	private Spinner s_instrument;
 	private Spinner s_root;
-	private Spinner s_scale;
+	private Spinner s_triad;
 	private Spinner s_extra;
 	
 	private ChordView chordView;
@@ -55,20 +56,20 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
        
         s_instrument = (Spinner) findViewById(R.id.instrument);
         s_root = (Spinner) findViewById(R.id.root);
-        s_scale = (Spinner) findViewById(R.id.triad);
+        s_triad = (Spinner) findViewById(R.id.triad);
         s_extra = (Spinner) findViewById(R.id.extra);
         
         t_variant = (TextView) findViewById(R.id.variant);
         
         s_instrument.setOnItemSelectedListener(this);
         s_root.setOnItemSelectedListener(this);
-        s_scale.setOnItemSelectedListener(this);
+        s_triad.setOnItemSelectedListener(this);
         s_extra.setOnItemSelectedListener(this);
         
         // restore old bundle data
         setSpinner(s_instrument, savedInstanceState, "instrument");
         setSpinner(s_root, savedInstanceState, "root");
-        setSpinner(s_scale, savedInstanceState, "scale");
+        setSpinner(s_triad, savedInstanceState, "scale");
         setSpinner(s_extra, savedInstanceState, "extra");
         
         chordView.setClickable(true);
@@ -88,15 +89,22 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
     	super.onSaveInstanceState(outState);
     	outState.putInt("instrument", s_instrument.getSelectedItemPosition());
     	outState.putInt("root", s_root.getSelectedItemPosition());
-    	outState.putInt("scale", s_scale.getSelectedItemPosition());
+    	outState.putInt("scale", s_triad.getSelectedItemPosition());
     	outState.putInt("extra", s_extra.getSelectedItemPosition());
     }
     
     public String getSelectedChord() {
     	StringBuilder sb = new StringBuilder();
     	sb.append( s_root.getSelectedItem() );
-    	sb.append( s_scale.getSelectedItem() );
-    	sb.append( s_extra.getSelectedItem() );
+    	String triad = (String) s_triad.getSelectedItem();
+    	// for some reason, the order of chord name components differs
+    	if (Pattern.matches("^|m|dim$", triad)) {
+    		sb.append( s_triad.getSelectedItem() );
+    		sb.append( s_extra.getSelectedItem() );
+    	} else {
+    		sb.append( s_extra.getSelectedItem() );
+      		sb.append( s_triad.getSelectedItem() );   		
+    	}
     	return sb.toString();
     }
     
