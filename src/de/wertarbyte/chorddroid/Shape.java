@@ -40,6 +40,8 @@ public class Shape {
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
+		sb.append(label);
+		sb.append(' ');
 		for (int i = 0; i < pos.length; i++) {
 			if (pos[i] == MUTE) {
 				sb.append('x');
@@ -79,5 +81,4 @@ public class Shape {
 		}
 		return r;
 	}
-
 }

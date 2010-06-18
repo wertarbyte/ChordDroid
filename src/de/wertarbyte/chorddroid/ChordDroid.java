@@ -7,15 +7,17 @@ import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class ChordDroid extends Activity implements OnItemSelectedListener, OnClickListener, OnLongClickListener {	
+public class ChordDroid extends Activity implements OnItemSelectedListener, OnClickListener {	
 	private List<Instrument> instruments;
 	
 	private Spinner s_instrument;
@@ -74,7 +76,8 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
         
         chordView.setClickable(true);
         chordView.setOnClickListener(this);
-        chordView.setOnLongClickListener(this);
+        
+        registerForContextMenu(chordView);
     }
     
     private void setSpinner(Spinner s, Bundle b, String key) {
@@ -146,14 +149,22 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 			}
 		}
 	}
-
-	public boolean onLongClick(View src) {
-		if (src == chordView) {
-			chord_variant = 0;
-			refresh_shape();
-			return true;
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		List<Shape> shapes = getShapes();
+		int i = 0;
+		for (Shape s : shapes) {
+			menu.add(0, i++, 0, s.toString());
 		}
-		return false;
+	}
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		chord_variant = item.getItemId();
+		refresh_shape();
+		return true;
 	}
     
 }
