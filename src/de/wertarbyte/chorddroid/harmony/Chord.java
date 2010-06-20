@@ -17,7 +17,7 @@ public class Chord implements Polynote<Chord> {
 	private Note base;
 	
 	private final static Pattern CHORD_RE = Pattern.compile("^([a-g][b]?)([^/]*)(/([a-g][b]?))?$");
-	private final static Pattern COMPONENT_RE = Pattern.compile("m|aug|dim|5|sus[24]|6|(maj)?7");
+	private final static Pattern COMPONENT_RE = Pattern.compile("aug|dim|5|sus[24]|6|(maj)?7|m");
 
 	private Chord(String name) throws InvalidChordException {
 		Matcher m = CHORD_RE.matcher(name.toLowerCase());
