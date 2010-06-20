@@ -16,22 +16,30 @@ public class Chord implements Polynote<Chord> {
 	private SortedSet<ChordComponent> comps;
 	private Note base;
 	
-	private final static Pattern CHORD_RE = Pattern.compile("^([a-g][b]?)(|m|aug|dim|5|sus[24])(6|(maj)?7)?(/([a-g][b]?))?$");
-	
+	private final static Pattern CHORD_RE = Pattern.compile("^([a-g][b]?)([^/]*)(/([a-g][b]?))?$");
+	private final static Pattern COMPONENT_RE = Pattern.compile("m|aug|dim|5|sus[24]|6|(maj)?7");
+
 	private Chord(String name) throws InvalidChordException {
 		Matcher m = CHORD_RE.matcher(name.toLowerCase());
 		if (m.matches()) {
 			root = Note.lookup(m.group(1));
-			String triad = m.group(2);
-			String extras = m.group(3);
-			String base = m.group(5);
+			String extras = m.group(2);
+			String base = m.group(4);
 			
 			// components are arranged by their order value 			
 			this.comps = new TreeSet<ChordComponent>();
-			this.comps.add( ChordComponent.getByString(triad) );
 			
-			if (extras != null && !"".equals(extras)) {
-				this.comps.add( ChordComponent.getByString(extras) );
+			Matcher cMatcher = COMPONENT_RE.matcher(extras);
+			boolean triadFound = false;
+			while (cMatcher.find()) {
+				if (cMatcher.group().matches("^(m|aug|dim|5|sus[24])$")) {
+					triadFound = true;
+				}
+				this.comps.add( ChordComponent.getByString(cMatcher.group()) );
+			}
+			// if no triad is specified, we add the major third
+			if (!triadFound) {
+				comps.add( ChordComponent.getByString("") );
 			}
 			
 			// add the additional base note
