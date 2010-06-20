@@ -134,7 +134,7 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 		List<Shape> shapes = getShapes();
 		if (shapes != null && shapes.size() > 0) {
 			Shape s = shapes.get(chord_variant);
-			t_variant.setText(s.getLabel()+": "+(chord_variant+1)+"/"+shapes.size());
+			t_variant.setText(s.getChord().getName()+": "+(chord_variant+1)+"/"+shapes.size());
 			chordView.setShape( shapes.get(chord_variant) );
 		}
 	}

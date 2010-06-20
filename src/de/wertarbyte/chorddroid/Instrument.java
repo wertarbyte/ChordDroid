@@ -45,7 +45,7 @@ public class Instrument {
 				// a chord might have multiple shapes
 				for (int i = 1; i < fields.length; i++) {
 					String shape = fields[i];
-					Shape s = Shape.createShape(key.getName(), shape);
+					Shape s = Shape.createShape(key, shape);
 					result.add(s);
 				}
 			}

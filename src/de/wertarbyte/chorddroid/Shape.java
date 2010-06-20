@@ -4,18 +4,20 @@
  */
 package de.wertarbyte.chorddroid;
 
+import de.wertarbyte.chorddroid.harmony.Chord;
+
 public class Shape {
 	private final static int MUTE = -1;
 	
 	private final int[] pos;
-	private final String label;
+	private final Chord chord;
 	
-	public Shape(String label, int... p) {
+	public Shape(Chord chord, int... p) {
 		pos = p;
-		this.label = label;
+		this.chord = chord;
 	}
 	
-	public static Shape createShape(String label, String shape) {
+	public static Shape createShape(Chord chord, String shape) {
 		String[] f = shape.split("-");
 		int[] p = new int[f.length];
 		for (int i = 0; i < f.length; i++) {
@@ -26,22 +28,22 @@ public class Shape {
 				p[i] = Integer.parseInt(c);
 			}
 		}
-		return new Shape(label, p);
+		return new Shape(chord, p);
 	}
 
 	public int[] getPositions() {
 		return pos;
 	}
 	
-	public String getLabel() {
-		return label;
+	public Chord getChord() {
+		return chord;
 	}
 	
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		sb.append(label);
-		sb.append(' ');
+		sb.append(chord.getName());
+		sb.append('\t');
 		for (int i = 0; i < pos.length; i++) {
 			if (pos[i] == MUTE) {
 				sb.append('x');
