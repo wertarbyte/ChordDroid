@@ -4,7 +4,6 @@
  */
 package de.wertarbyte.chorddroid.harmony;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -14,38 +13,31 @@ import java.util.regex.Pattern;
 public class Chord implements Polynote<Chord> {
 	
 	private Note root;
-	private Set<Integer> offsets;
-	private String name;
+	private SortedSet<ChordComponent> comps;
+	private Note base;
 	
-	private final static Pattern CHORD_RE = Pattern.compile("^([a-g][b]?)(|m|aug|dim|5|sus[24])(6|7)?(/([a-g][b]?))?$");
-	
-	private void addComponentOffsets(ChordComponent cp) {
-		if (cp != null) {
-			for (int o : cp.getOffsets()) {
-				offsets.add(o);
-			}
-		}
-	}
+	private final static Pattern CHORD_RE = Pattern.compile("^([a-g][b]?)(|m|aug|dim|5|sus[24])(6|(maj)?7)?(/([a-g][b]?))?$");
 	
 	private Chord(String name) throws InvalidChordException {
 		Matcher m = CHORD_RE.matcher(name.toLowerCase());
 		if (m.matches()) {
-			this.name = name;
 			root = Note.lookup(m.group(1));
-			offsets = new HashSet<Integer>();
 			String triad = m.group(2);
-			String extra = m.group(3);
+			String extras = m.group(3);
 			String base = m.group(5);
 			
-			addComponentOffsets(ChordComponent.getByString(triad));
-			addComponentOffsets(ChordComponent.getByString(extra));
+			// components are arranged by their order value 			
+			this.comps = new TreeSet<ChordComponent>();
+			this.comps.add( ChordComponent.getByString(triad) );
+			
+			if (extras != null && !"".equals(extras)) {
+				this.comps.add( ChordComponent.getByString(extras) );
+			}
 			
 			// add the additional base note
 			if (base != null) {
 				// transpose it down an octave
-				Note baseNote = Note.lookup(base).transpose(-12);
-				int difference = root.getHalfStepsTo(baseNote);
-				offsets.add(difference);
+				this.base = Note.lookup(base).transpose(-12);
 			}
 		} else {
 			throw new InvalidChordException();
@@ -61,14 +53,30 @@ public class Chord implements Polynote<Chord> {
 	}
 	
 	public String getName() {
-		return name;
+		StringBuffer sb = new StringBuffer();
+		sb.append(root.getName());
+		// append the components
+		for (ChordComponent cp : comps) {
+			sb.append(cp.getLabel());
+		}
+		if (base != null) {
+			sb.append("/");
+			sb.append(base.getName());
+		}
+		return sb.toString();
 	}
 
 	public Set<Note> getNotes() {
 		SortedSet<Note> result = new TreeSet<Note>();
 		result.add(root);
-		for (int i : offsets) {
-			result.add( root.transpose(i) );
+		// add components
+		for (ChordComponent cp : comps) {
+			for (int o : cp.getOffsets()) {
+				result.add( root.transpose(o) );
+			}
+		}
+		if (base != null) {
+			result.add(base);
 		}
 		return result;
 	}
@@ -76,9 +84,12 @@ public class Chord implements Polynote<Chord> {
 	public Chord transpose(int steps) {
 		Chord r = null;
 		try {
-			r = new Chord(name);
+			r = new Chord(getName());
 			// now we replace the root
 			r.root = root.transpose(steps);
+			if (base != null) {
+				r.base = base.transpose(steps);
+			}
 		} catch (InvalidChordException e) {
 			e.printStackTrace();
 		}
@@ -93,4 +104,10 @@ public class Chord implements Polynote<Chord> {
 		}
 		return super.equals(o);
 	}
+	
+	@Override
+	public String toString() {
+		return getName()+" chord";
+	}
+
 }
