@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import de.wertarbyte.chorddroid.harmony.Chord;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -96,7 +98,7 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
     	outState.putInt("extra", s_extra.getSelectedItemPosition());
     }
     
-    public String getSelectedChord() {
+    public Chord getSelectedChord() {
     	StringBuilder sb = new StringBuilder();
     	sb.append( s_root.getSelectedItem() );
     	String triad = (String) s_triad.getSelectedItem();
@@ -108,7 +110,7 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
     		sb.append( s_extra.getSelectedItem() );
       		sb.append( s_triad.getSelectedItem() );   		
     	}
-    	return sb.toString();
+    	return Chord.lookup(sb.toString());
     }
     
     public Instrument getSelectedInstrument() {
