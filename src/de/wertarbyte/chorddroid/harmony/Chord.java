@@ -93,7 +93,7 @@ public class Chord implements Polynote<Chord> {
 		Chord r = null;
 		try {
 			r = new Chord(getName());
-			// now we replace the root
+			// now we replace the root and base notes
 			r.root = root.transpose(steps);
 			if (base != null) {
 				r.base = base.transpose(steps);
@@ -102,6 +102,18 @@ public class Chord implements Polynote<Chord> {
 			e.printStackTrace();
 		}
 		return r;
+	}
+	
+	public Chord slashless() {
+		Chord r = null;
+		try {
+			r = new Chord(getName());
+			// now we remove the custom base note
+			r.base = null;
+		} catch (InvalidChordException e) {
+			e.printStackTrace();
+		}
+		return r;		
 	}
 	
 	@Override
