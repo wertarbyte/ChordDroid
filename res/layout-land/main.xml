@@ -4,25 +4,22 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-    <LinearLayout android:id="@+id/LinearLayout03" android:layout_height="wrap_content" android:layout_width="fill_parent"><Spinner android:id="@+id/instrument" android:entries="@array/instrument" android:layout_height="wrap_content" android:prompt="@string/select_instrument" android:layout_width="wrap_content" android:layout_weight="3"/><Spinner android:id="@+id/transposer" android:layout_height="wrap_content" android:layout_width="wrap_content" android:entries="@array/transposition_steps" android:saveEnabled="true" /></LinearLayout>
+    <LinearLayout android:id="@+id/LinearLayout03" android:layout_height="wrap_content" android:layout_width="fill_parent">
+    	<include layout="@layout/instrumentselector" />
+    </LinearLayout>
     
 	<LinearLayout android:id="@+id/LinearLayout02" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent">
 		<LinearLayout android:id="@+id/LinearLayout01" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="4">
-			<Spinner android:id="@+id/root"
-				android:entries="@array/root" android:addStatesFromChildren="false" android:layout_height="wrap_content" android:layout_weight="1" android:layout_width="fill_parent"/>
-			<Spinner android:id="@+id/triad"
-				android:entries="@array/triad" android:addStatesFromChildren="false" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1"/>
-			<Spinner android:id="@+id/extra"
-				android:entries="@array/extra" android:addStatesFromChildren="false" android:layout_height="wrap_content" android:saveEnabled="true" android:layout_weight="1" android:layout_width="fill_parent"/>
+			<include layout="@layout/chordselector"/>
 			<TextView android:id="@+id/variant"
-				android:layout_height="wrap_content" android:layout_width="fill_parent" android:lines="1" android:text="-" android:textSize="12pt" android:typeface="normal"/>
+				android:layout_height="wrap_content" android:layout_width="fill_parent" android:lines="1" android:text="-" android:typeface="normal"/>
 		</LinearLayout>
 			
 		<LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1"> 
 			<de.wertarbyte.chorddroid.ChordView
 				android:id="@+id/chordview"
 				android:layout_width="fill_parent"
-				android:layout_height="fill_parent"/>
+				android:layout_height="fill_parent" android:layout_margin="5px"/>
 		</LinearLayout>
 	</LinearLayout>
 	
