@@ -113,7 +113,7 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
     		sb.append( s_extra.getSelectedItem() );
       		sb.append( s_triad.getSelectedItem() );   		
     	}
-    	return Chord.lookup(sb.toString()).transpose(getTranspositionSteps());
+    	return Chord.lookup(sb.toString()).transpose(getTranspositionSteps()*-1);
     }
     
     private int getTranspositionSteps() {
