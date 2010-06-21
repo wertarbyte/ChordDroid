@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 	<Spinner android:id="@+id/root"
-		android:entries="@array/root" android:addStatesFromChildren="false" android:layout_height="wrap_content" android:layout_weight="1" android:layout_width="fill_parent"/>
+		android:entries="@array/root" android:addStatesFromChildren="false" android:layout_height="wrap_content" android:saveEnabled="true" android:layout_weight="1" android:layout_width="fill_parent"/>
 	<Spinner android:id="@+id/triad"
-			android:entries="@array/triad" android:addStatesFromChildren="false" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1"/>
+			android:entries="@array/triad" android:addStatesFromChildren="false" android:layout_height="wrap_content" android:saveEnabled="true" android:layout_width="fill_parent" android:layout_weight="1"/>
 	<Spinner android:id="@+id/extra"
 			android:entries="@array/extra" android:addStatesFromChildren="false" android:layout_height="wrap_content" android:saveEnabled="true" android:layout_weight="1" android:layout_width="fill_parent"/>
 </merge>

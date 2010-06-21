@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-    <LinearLayout android:id="@+id/LinearLayout03" android:layout_height="wrap_content" android:layout_width="fill_parent">
-    	<include layout="@layout/instrumentselector" />
-    </LinearLayout>
+    android:layout_height="fill_parent">
     
-	<LinearLayout android:id="@+id/LinearLayout02" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent">
-		<LinearLayout android:id="@+id/LinearLayout01" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="4">
+    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+    	<include layout="@layout/instrumentselector"/>
+    </LinearLayout>
+	
+	<LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent">
+		<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="4">
 			<include layout="@layout/chordselector"/>
 			<TextView android:id="@+id/variant"
 				android:layout_height="wrap_content" android:layout_width="fill_parent" android:lines="1" android:text="-" android:typeface="normal"/>
@@ -22,9 +22,4 @@
 				android:layout_height="fill_parent" android:layout_margin="5px"/>
 		</LinearLayout>
 	</LinearLayout>
-	
-
-
-
-
 </LinearLayout>

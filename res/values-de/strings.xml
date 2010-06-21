@@ -2,6 +2,7 @@
 <resources>
 	<string name="app_name">Chord-Droid</string>
 	<string name="select_instrument">Instrument auswählen</string>
+	<string name="select_transposition">Halbtonschritte zur Transposition auswählen</string>
 	
 	<string name="guitar_standard">Gitarre, Standard</string>
 	<string name="guitar_dropd">Gitarre, Drop-D</string>

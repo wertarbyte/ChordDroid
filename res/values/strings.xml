@@ -2,6 +2,7 @@
 <resources>
 	<string name="app_name">Chord Droid</string>
 	<string name="select_instrument">Select your instrument</string>
+	<string name="select_transposition">Number of transposition halfsteps:</string>
 	
 	<string name="guitar_standard">Guitar, Standard</string>
 	<string name="guitar_dropd">Guitar, Drop-D</string>

@@ -4,11 +4,11 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
     
-   	<LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:layout_width="fill_parent">
-   		<include layout="@layout/instrumentselector" />
-	</LinearLayout>
+    <LinearLayout android:orientation="horizontal"  android:layout_width="fill_parent" android:layout_height="wrap_content">
+   		<include layout="@layout/instrumentselector" android:orientation="horizontal"/>
+   	</LinearLayout>
     
-	<LinearLayout android:id="@+id/LinearLayout01" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+	<LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
 		<include layout="@layout/chordselector"/>
 	</LinearLayout>
 	
