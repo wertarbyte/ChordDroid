@@ -11,5 +11,21 @@
     	<item>ukulele_gcea</item>
     	<item>guitar_dropd</item>
     	<item>ukulele_baritone</item>
-    </array>    
+    </array>
+    <string-array name="transposition_steps">
+    	<item>0</item>
+    	<item>-6</item>
+    	<item>-5</item>
+    	<item>-4</item>
+    	<item>-3</item>
+    	<item>-2</item>
+    	<item>-1</item>
+    	<item>0</item>
+    	<item>+1</item>
+    	<item>+2</item>
+    	<item>+3</item>
+    	<item>+4</item>
+    	<item>+5</item>
+    	<item>+6</item>	
+    </string-array>
 </resources>

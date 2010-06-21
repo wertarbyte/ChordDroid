@@ -26,6 +26,7 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 	private Spinner s_root;
 	private Spinner s_triad;
 	private Spinner s_extra;
+	private Spinner s_transposer;
 	
 	private ChordView chordView;
 	private TextView t_variant;
@@ -62,6 +63,7 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
         s_root = (Spinner) findViewById(R.id.root);
         s_triad = (Spinner) findViewById(R.id.triad);
         s_extra = (Spinner) findViewById(R.id.extra);
+        s_transposer = (Spinner) findViewById(R.id.transposer);
         
         t_variant = (TextView) findViewById(R.id.variant);
         
@@ -69,6 +71,7 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
         s_root.setOnItemSelectedListener(this);
         s_triad.setOnItemSelectedListener(this);
         s_extra.setOnItemSelectedListener(this);
+        s_transposer.setOnItemSelectedListener(this);
         
         // restore old bundle data
         setSpinner(s_instrument, savedInstanceState, "instrument");
@@ -110,7 +113,17 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
     		sb.append( s_extra.getSelectedItem() );
       		sb.append( s_triad.getSelectedItem() );   		
     	}
-    	return Chord.lookup(sb.toString());
+    	return Chord.lookup(sb.toString()).transpose(getTranspositionSteps());
+    }
+    
+    private int getTranspositionSteps() {
+    	int i = s_transposer.getSelectedItemPosition();
+    	int c = s_transposer.getCount();
+    	if (i == 0) {
+    		return 0;
+    	} else {
+    		return i-(c/2);
+    	}
     }
     
     public Instrument getSelectedInstrument() {

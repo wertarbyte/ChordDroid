@@ -90,6 +90,10 @@ public class Chord implements Polynote<Chord> {
 	}
 
 	public Chord transpose(int steps) {
+		if (steps == 0) {
+			return this;
+		}
+		
 		Chord r = null;
 		try {
 			r = new Chord(getName());
