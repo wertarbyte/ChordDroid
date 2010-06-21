@@ -113,7 +113,7 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
     		sb.append( s_extra.getSelectedItem() );
       		sb.append( s_triad.getSelectedItem() );   		
     	}
-    	return Chord.lookup(sb.toString()).transpose(getTranspositionSteps()*-1);
+    	return Chord.lookup(sb.toString());
     }
     
     private int getTranspositionSteps() {
@@ -133,6 +133,7 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 
 	public void onItemSelected(AdapterView<?> sender, View v, int pos, long id) {
 		chord_variant = 0;
+		getSelectedInstrument().setTranspositionSteps( getTranspositionSteps() );
 		currentShapes = getSelectedInstrument().lookup(getSelectedChord());
 		refresh_shape();
 	}
