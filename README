@@ -1,0 +1,9 @@
+ChordDroid
+ the Android dictionary of chord shapes for stringed instruments
+
+ChordDroid provides a simple interface to lookup chord shapes for various
+instruments and tunings, including guitar (standard, dropd) and ukulele (gcea,
+baritone) configurations. Transposing chords using a "virtual capo" is supported
+as well.
+
+This program is free software licenced under the conditions of the GPLv3.
