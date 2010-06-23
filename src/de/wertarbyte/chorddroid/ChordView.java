@@ -26,18 +26,14 @@ public class ChordView extends View {
 		
 		stringPaint = new Paint();
 		stringPaint.setColor(Color.WHITE);
-		stringPaint.setStrokeWidth(4);
 		stringPaint.setAntiAlias(true);
 		
 		fretPaint = new Paint();
 		fretPaint.setColor(Color.WHITE);
-		fretPaint.setStrokeWidth(2);
-		fretPaint.setTextSize(24);
 		fretPaint.setAntiAlias(true);
 		
 		nutPaint = new Paint();
 		nutPaint.setColor(Color.WHITE);
-		nutPaint.setStrokeWidth(8);
 		nutPaint.setAntiAlias(true);
 
 		
@@ -58,6 +54,13 @@ public class ChordView extends View {
         
         // we use a square playing field
         int size = Math.min(width, height);
+        
+        Log.i("chord", "size is "+size);
+        float penWidth = size/100;
+    	stringPaint.setStrokeWidth(penWidth);    
+		nutPaint.setStrokeWidth(penWidth*2);
+		fretPaint.setStrokeWidth(penWidth/2);
+		fretPaint.setTextSize(12*penWidth);
 
 		if (chordshape != null) {
 			// draw the chord shape
@@ -93,7 +96,7 @@ public class ChordView extends View {
 		float d_h = size/(n+1);
 		
 		// label the first fret
-		c.drawText(first_fret+"", d_w*0.5f, d_h*0.5f , fretPaint);
+		c.drawText(first_fret+"", d_w*0.5f, d_h*0.7f , fretPaint);
 
 		for (int i = n; i>0;  i--) {
 			c.drawLine(0, d_h*i, size, d_h*i, stringPaint);
