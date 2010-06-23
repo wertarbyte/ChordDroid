@@ -68,6 +68,12 @@ public class ChordView extends View {
 		}
 	}
 	
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		int size = Math.min( MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec) );
+		setMeasuredDimension(size, size);
+	}	
+	
 	private void drawLines(Canvas c, int size) {
 		int[] pos = chordshape.getPositions();
 		int n = pos.length;
