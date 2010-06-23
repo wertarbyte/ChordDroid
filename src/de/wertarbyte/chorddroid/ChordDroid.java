@@ -5,22 +5,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import de.wertarbyte.chorddroid.harmony.Chord;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 import android.widget.AdapterView.OnItemSelectedListener;
+import de.wertarbyte.chorddroid.harmony.Chord;
 
 public class ChordDroid extends Activity implements OnItemSelectedListener, OnClickListener {
 	private List<Instrument> instruments;
+	
+	private static final int TOBASKET = 0;
+	private static final int TOLIB = 1;
+	private static final int ADDTOBASKET = 2;
+	
+	private ViewFlipper flipper;
 	
 	private Spinner s_instrument;
 	private Spinner s_root;
@@ -30,6 +40,10 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 	
 	private ChordView chordView;
 	private TextView t_variant;
+	
+	private ListView l_basket;
+	
+	private ChordBasket basket;
 	
 	private int chord_variant;
 	
@@ -55,7 +69,13 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 			}
 		}
 		
-		setContentView(R.layout.main);
+		basket = new ChordBasket(this, this);
+		
+		setContentView(R.layout.chorddroid);
+		flipper = (ViewFlipper) findViewById(R.id.flipper);
+		
+		Animation s_in = AnimationUtils.loadAnimation(this, R.anim.fadein);
+		this.flipper.setInAnimation(s_in);
 		
 		chordView = (ChordView) findViewById(R.id.chordview);
 		
@@ -66,6 +86,9 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 		s_transposer = (Spinner) findViewById(R.id.transposer);
 		
 		t_variant = (TextView) findViewById(R.id.variant);
+		
+		l_basket = (ListView) findViewById(R.id.basketlist);
+		l_basket.setAdapter(basket.getAdapter());
 		
 		s_instrument.setOnItemSelectedListener(this);
 		s_root.setOnItemSelectedListener(this);
@@ -133,7 +156,7 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 	
 	public void onItemSelected(AdapterView<?> sender, View v, int pos, long id) {
 		chord_variant = 0;
-		getSelectedInstrument().setTranspositionSteps(getTranspositionSteps());
+		getSelectedInstrument().setTranspositionSteps( getTranspositionSteps() );
 		currentShapes = getSelectedInstrument().lookup(getSelectedChord());
 		refresh_shape();
 	}
@@ -144,12 +167,14 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 	
 	public void refresh_shape() {
 		chordView.setShape(null);
+		// refresh the shapes in our basket as well
+		basket.getAdapter().notifyDataSetChanged();
 		t_variant.setText(getSelectedChord().getName() + ": -");
 		List<Shape> shapes = getShapes();
 		if (shapes != null && shapes.size() > 0) {
 			Shape s = shapes.get(chord_variant);
-			t_variant.setText(s.getChord().getName() + ": " + (chord_variant + 1) + "/" + shapes.size());
-			chordView.setShape(shapes.get(chord_variant));
+			t_variant.setText(s.getChord().getName()+": "+(chord_variant+1)+"/"+shapes.size());
+			chordView.setShape( shapes.get(chord_variant) );
 		}
 	}
 	
@@ -181,6 +206,37 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 	public boolean onContextItemSelected(MenuItem item) {
 		chord_variant = item.getItemId();
 		refresh_shape();
+		return true;
+	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.clear();
+		if (flipper.getDisplayedChild() == 0) {
+			menu.add(Menu.NONE, ADDTOBASKET, 1, "Add to basket");
+			menu.add(Menu.NONE, TOBASKET, 1, "Show basket");
+		} else {
+			menu.add(Menu.NONE, TOLIB, 1, "Show library");
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int choice = item.getItemId();
+		switch (choice) {
+		case TOBASKET:
+			flipper.showNext();
+			break;
+		case TOLIB:
+			flipper.showPrevious();
+			break;
+		case ADDTOBASKET:
+			basket.addChord(getSelectedChord());
+			break;
+		default:
+			break;
+		}
 		return true;
 	}
 	

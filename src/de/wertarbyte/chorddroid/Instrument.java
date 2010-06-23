@@ -43,8 +43,9 @@ public class Instrument {
 		
 		List<Shape> result = new LinkedList<Shape>();
 		// load chord shapes from resource
-		InputStream is = assets.open("chords/" + name + "/" + transposed.getName());
-		if (is == null) {
+                InputStream is = assets.open("chords/" + name + "/" + transposed.getName());
+		
+                if (is == null) {
 			return result;
 		}
 		
