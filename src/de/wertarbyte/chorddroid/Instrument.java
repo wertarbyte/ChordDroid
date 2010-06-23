@@ -12,7 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import android.content.res.AssetManager;
-import android.util.Log;
 import de.wertarbyte.chorddroid.harmony.Chord;
 
 public class Instrument {
@@ -20,7 +19,7 @@ public class Instrument {
 	private String name;
 	private AssetManager assets;
 	private int transpositionSteps;
-
+	
 	public Instrument(AssetManager assets, String name) throws IOException {
 		this.name = name;
 		this.assets = assets;
@@ -30,23 +29,21 @@ public class Instrument {
 	public int getTranspositionSteps() {
 		return transpositionSteps;
 	}
-
+	
 	public void setTranspositionSteps(int transpositionSteps) {
 		this.transpositionSteps = transpositionSteps;
 	}
-
+	
 	private List<Shape> searchDatabase(Chord chord) throws IOException {
 		// we ignore the base note while searching
 		Chord wanted = chord.slashless();
 		
 		// transpose the query chord according to our instrument setup
-		Chord transposed = wanted.transpose(-1*getTranspositionSteps());
-		Log.i("chord", wanted+" -> "+transposed);
+		Chord transposed = wanted.transpose(-1 * getTranspositionSteps());
 		
 		List<Shape> result = new LinkedList<Shape>();
 		// load chord shapes from resource
-		Log.i("chord", "chords/"+name+"/"+transposed.getName());
-		InputStream is = assets.open("chords/"+name+"/"+transposed.getName());
+		InputStream is = assets.open("chords/" + name + "/" + transposed.getName());
 		if (is == null) {
 			return result;
 		}
@@ -76,7 +73,6 @@ public class Instrument {
 		try {
 			return searchDatabase(chord);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return new LinkedList<Shape>();

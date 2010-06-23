@@ -4,12 +4,10 @@
  */
 package de.wertarbyte.chorddroid.harmony;
 
-
-
 public class Note implements Transposable<Note>, Comparable<Note> {
 	private int pitch;
 	
-	private static final String[] NAMES = new String[] {"C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B" };
+	private static final String[] NAMES = new String[] { "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B" };
 	
 	private Note(int pitch) {
 		this.pitch = pitch;
@@ -27,8 +25,9 @@ public class Note implements Transposable<Note>, Comparable<Note> {
 	}
 	
 	private int getNormalizedPitch() {
-		int i = pitch%NAMES.length;
-		// Java uses the other modulo operator (not the one used by python), so we have to handle negative values ourself
+		int i = pitch % NAMES.length;
+		// Java uses the other modulo operator (not the one used by python), so
+		// we have to handle negative values ourself
 		while (i < 0) {
 			i += NAMES.length;
 		}
@@ -54,11 +53,11 @@ public class Note implements Transposable<Note>, Comparable<Note> {
 	public int hashCode() {
 		return pitch;
 	}
-
+	
 	public Note transpose(int steps) {
-		return new Note(pitch+steps);
+		return new Note(pitch + steps);
 	}
-
+	
 	public int compareTo(Note n) {
 		return new Integer(pitch).compareTo(n.pitch);
 	}

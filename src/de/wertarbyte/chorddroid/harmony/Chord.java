@@ -18,7 +18,7 @@ public class Chord implements Polynote<Chord> {
 	
 	private final static Pattern CHORD_RE = Pattern.compile("^([a-g][b]?)([^/]*)(/([a-g][b]?))?$");
 	private final static Pattern COMPONENT_RE = Pattern.compile("aug|dim|5|sus[24]|6|(maj)?7|m");
-
+	
 	private Chord(String name) throws InvalidChordException {
 		Matcher m = CHORD_RE.matcher(name.toLowerCase());
 		if (m.matches()) {
@@ -26,7 +26,7 @@ public class Chord implements Polynote<Chord> {
 			String extras = m.group(2);
 			String base = m.group(4);
 			
-			// components are arranged by their order value 			
+			// components are arranged by their order value
 			this.comps = new TreeSet<ChordComponent>();
 			
 			Matcher cMatcher = COMPONENT_RE.matcher(extras);
@@ -35,11 +35,11 @@ public class Chord implements Polynote<Chord> {
 				if (cMatcher.group().matches("^(m|aug|dim|5|sus[24])$")) {
 					triadFound = true;
 				}
-				this.comps.add( ChordComponent.getByString(cMatcher.group()) );
+				this.comps.add(ChordComponent.getByString(cMatcher.group()));
 			}
 			// if no triad is specified, we add the major third
 			if (!triadFound) {
-				comps.add( ChordComponent.getByString("") );
+				comps.add(ChordComponent.getByString(""));
 			}
 			
 			// add the additional base note
@@ -73,14 +73,14 @@ public class Chord implements Polynote<Chord> {
 		}
 		return sb.toString();
 	}
-
+	
 	public Set<Note> getNotes() {
 		SortedSet<Note> result = new TreeSet<Note>();
 		result.add(root);
 		// add components
 		for (ChordComponent cp : comps) {
 			for (int o : cp.getOffsets()) {
-				result.add( root.transpose(o) );
+				result.add(root.transpose(o));
 			}
 		}
 		if (base != null) {
@@ -88,7 +88,7 @@ public class Chord implements Polynote<Chord> {
 		}
 		return result;
 	}
-
+	
 	public Chord transpose(int steps) {
 		if (steps == 0) {
 			return this;
@@ -117,7 +117,7 @@ public class Chord implements Polynote<Chord> {
 		} catch (InvalidChordException e) {
 			e.printStackTrace();
 		}
-		return r;		
+		return r;
 	}
 	
 	@Override
@@ -131,7 +131,7 @@ public class Chord implements Polynote<Chord> {
 	
 	@Override
 	public String toString() {
-		return getName()+" chord";
+		return getName() + " chord";
 	}
-
+	
 }

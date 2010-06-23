@@ -5,4 +5,5 @@
 package de.wertarbyte.chorddroid.harmony;
 
 @SuppressWarnings("serial")
-public class InvalidChordException extends Exception {}
+public class InvalidChordException extends Exception {
+}

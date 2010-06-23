@@ -30,7 +30,7 @@ public class Shape {
 		}
 		return new Shape(chord, p);
 	}
-
+	
 	public int[] getPositions() {
 		return pos;
 	}
@@ -50,7 +50,7 @@ public class Shape {
 			} else {
 				sb.append(pos[i]);
 			}
-			if (i != pos.length-1) {
+			if (i != pos.length - 1) {
 				sb.append('-');
 			}
 		}
@@ -58,7 +58,7 @@ public class Shape {
 	}
 	
 	public int getMinPos() {
-		int r=-2;
+		int r = -2;
 		for (int i = 0; i < pos.length; i++) {
 			int p = pos[i];
 			if (r == -2) {
@@ -66,15 +66,16 @@ public class Shape {
 				r = p;
 			} else {
 				// ignore open (0) and muted (-1) strings
-				if (p>0 && (r<1 || p < r)) {
+				if (p > 0 && (r < 1 || p < r)) {
 					r = p;
 				}
 			}
 		}
 		return r;
 	}
+	
 	public int getMaxPos() {
-		int r=-2;
+		int r = -2;
 		for (int i = 0; i < pos.length; i++) {
 			int p = pos[i];
 			if (r == -2 || r < p) {
