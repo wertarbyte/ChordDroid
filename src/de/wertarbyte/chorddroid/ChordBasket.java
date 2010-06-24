@@ -4,6 +4,7 @@
  */
 package de.wertarbyte.chorddroid;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -45,12 +46,36 @@ public class ChordBasket {
 	}
 	
 	public void addChord(Chord c) {
-		for (Chord o : chords) {
-			if (o.equals(c)) {
-				return;
+		Iterator<Chord> it = chords.iterator();
+		while (it.hasNext()) {
+			if (it.next().equals(c)) {
+				// by removing this chord, we move it to the end
+				it.remove();
+				break;
 			}
 		}
 		chords.add(c);
+		adapter.notifyDataSetChanged();
+	}
+	
+	public void removeChord(int i) {
+		chords.remove(i);
+		adapter.notifyDataSetChanged();
+	}
+	
+	public void removeChord(Chord c) {
+		Iterator<Chord> it = chords.iterator();
+		while (it.hasNext()) {
+			if (it.next().equals(c)) {
+				it.remove();
+				return;
+			}
+		}
+		adapter.notifyDataSetChanged();
+	}
+	
+	public void clear() {
+		chords.clear();
 		adapter.notifyDataSetChanged();
 	}
 	

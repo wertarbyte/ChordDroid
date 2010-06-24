@@ -31,6 +31,11 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 	private static final int TOLIB = 1;
 	private static final int ADDTOBASKET = 2;
 	
+	private static final int CLEARBASKET = 3;
+	private static final int REMOVEFROMBASKET = 4;
+	
+	private static final int CHANGE_VARIANT = 5;
+	
 	private ViewFlipper flipper;
 	
 	private Spinner s_instrument;
@@ -108,6 +113,7 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 		chordView.setOnClickListener(this);
 		
 		registerForContextMenu(chordView);
+		registerForContextMenu(l_basket);
 	}
 	
 	@Override
@@ -187,17 +193,31 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		List<Shape> shapes = getShapes();
-		int i = 0;
-		for (Shape s : shapes) {
-			menu.add(0, i++, 0, s.toString());
+		if (v == chordView) {
+			List<Shape> shapes = getShapes();
+			int i = 0;
+			for (Shape s : shapes) {
+				menu.add(CHANGE_VARIANT, i++, 1, s.toString());
+			}
+		} else if (v == l_basket) {
+			menu.add(Menu.NONE, REMOVEFROMBASKET, 1, R.string.remove_from_basket);
 		}
 	}
 	
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		chord_variant = item.getItemId();
-		refresh_shape();
+		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+		if (item.getItemId() == REMOVEFROMBASKET) {
+			if (info != null) {
+				// TODO This feels quite hacky, how can I get the source of the context menu?
+				basket.removeChord(info.position);
+				return true;
+			}
+		}
+		if (item.getGroupId() == CHANGE_VARIANT) {
+			chord_variant = item.getItemId();
+			refresh_shape();
+		}
 		return true;
 	}
 	
@@ -208,6 +228,7 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 			menu.add(Menu.NONE, ADDTOBASKET, 1, R.string.add_to_basket);
 			menu.add(Menu.NONE, TOBASKET, 1, R.string.show_basket);
 		} else {
+			menu.add(Menu.NONE, CLEARBASKET, 1, R.string.empty_basket);
 			menu.add(Menu.NONE, TOLIB, 1, R.string.show_library);
 		}
 		return true;
@@ -219,17 +240,18 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 		switch (choice) {
 		case TOBASKET:
 			flipper.showNext();
-			break;
+			return true;
 		case TOLIB:
 			flipper.showPrevious();
-			break;
+			return true;
 		case ADDTOBASKET:
 			basket.addChord(getSelectedChord());
-			break;
-		default:
-			break;
+			return true;
+		case CLEARBASKET:
+			basket.clear();
+			return true;
 		}
-		return true;
+		return false;
 	}
 	
 	public boolean onKeyDown(int keyCode, KeyEvent event) {

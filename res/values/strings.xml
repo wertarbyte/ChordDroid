@@ -7,6 +7,8 @@
 	<string name="show_basket">Show basket</string>
 	<string name="show_library">Show Library</string>
 	<string name="add_to_basket">Add to basket</string>
+	<string name="empty_basket">Empty basket</string>
+	<string name="remove_from_basket">Remove from basket</string>
 	
 	<string name="guitar_standard">Guitar, Standard</string>
 	<string name="guitar_dropd">Guitar, Drop-D</string>

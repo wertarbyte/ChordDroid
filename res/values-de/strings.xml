@@ -7,6 +7,8 @@
 	<string name="show_basket">Korb zeigen</string>
 	<string name="show_library">Bibliothek</string>
 	<string name="add_to_basket">In den Korb legen</string>
+	<string name="empty_basket">Korb leeren</string>
+	<string name="remove_from_basket">Aus dem Korb entfernen</string>
 	
 	<string name="guitar_standard">Gitarre, Standard</string>
 	<string name="guitar_dropd">Gitarre, Drop-D</string>
