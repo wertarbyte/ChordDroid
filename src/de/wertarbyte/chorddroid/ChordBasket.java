@@ -53,4 +53,22 @@ public class ChordBasket {
 		chords.add(c);
 		adapter.notifyDataSetChanged();
 	}
+	
+	public String[] asStringArray() {
+		String[] result = new String[chords.size()];
+		int i = 0;
+		for (Chord c : chords) {
+			result[i++] = c.getName();
+		}
+		return result;
+	}
+	
+	public void fromStringArray(String[] input) {
+		for (String s : input) {
+			Chord c = Chord.lookup(s);
+			if (c != null) {
+				addChord(c);
+			}
+		}
+	}
 }

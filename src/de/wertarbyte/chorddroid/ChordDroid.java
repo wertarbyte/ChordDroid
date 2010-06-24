@@ -97,10 +97,11 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 		s_transposer.setOnItemSelectedListener(this);
 		
 		// restore old bundle data
-		setSpinner(s_instrument, savedInstanceState, "instrument");
-		setSpinner(s_root, savedInstanceState, "root");
-		setSpinner(s_triad, savedInstanceState, "scale");
-		setSpinner(s_extra, savedInstanceState, "extra");
+		if (savedInstanceState != null) {
+			if (savedInstanceState.containsKey("basket") ) {
+				basket.fromStringArray(savedInstanceState.getStringArray("basket"));
+			}
+		}
 		
 		chordView.setClickable(true);
 		chordView.setOnClickListener(this);
@@ -108,20 +109,10 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 		registerForContextMenu(chordView);
 	}
 	
-	private void setSpinner(Spinner s, Bundle b, String key) {
-		if (b != null && b.containsKey(key)) {
-			int pos = b.getInt(key);
-			s.setSelection(pos);
-		}
-	}
-	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putInt("instrument", s_instrument.getSelectedItemPosition());
-		outState.putInt("root", s_root.getSelectedItemPosition());
-		outState.putInt("scale", s_triad.getSelectedItemPosition());
-		outState.putInt("extra", s_extra.getSelectedItemPosition());
+		outState.putStringArray("basket", basket.asStringArray());
 	}
 	
 	public Chord getSelectedChord() {
