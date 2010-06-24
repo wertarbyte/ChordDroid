@@ -6,7 +6,8 @@
     <application android:icon="@drawable/icon" android:label="@string/app_name">
         <activity android:name=".ChordDroid"
                   android:label="@string/app_name"
-                  android:alwaysRetainTaskState="true">
+                  android:alwaysRetainTaskState="true"
+                  android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
