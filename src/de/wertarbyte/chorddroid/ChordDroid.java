@@ -204,10 +204,10 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.clear();
 		if (flipper.getDisplayedChild() == 0) {
-			menu.add(Menu.NONE, ADDTOBASKET, 1, "Add to basket");
-			menu.add(Menu.NONE, TOBASKET, 1, "Show basket");
+			menu.add(Menu.NONE, ADDTOBASKET, 1, R.string.add_to_basket);
+			menu.add(Menu.NONE, TOBASKET, 1, R.string.show_basket);
 		} else {
-			menu.add(Menu.NONE, TOLIB, 1, "Show library");
+			menu.add(Menu.NONE, TOLIB, 1, R.string.show_library);
 		}
 		return true;
 	}
