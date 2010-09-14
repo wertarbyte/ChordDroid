@@ -5,6 +5,6 @@
 	android:layout_height="fill_parent">
 	
 	<include layout="@layout/main" />
-	<include layout="@layout/chordbasket" />
+	<include layout="@layout/chordnotepad" />
 
 </ViewFlipper>

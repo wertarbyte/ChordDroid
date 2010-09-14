@@ -15,13 +15,13 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import de.wertarbyte.chorddroid.harmony.Chord;
 
-public class ChordBasket {
+public class ChordNotepad {
 	
 	private List<Chord> chords;
 	
 	private ArrayAdapter<Chord> adapter;
 	
-	public ChordBasket(final Context context, final ChordDroid cd) {
+	public ChordNotepad(final Context context, final ChordDroid cd) {
 		this.chords = new LinkedList<Chord>();
 		
 		this.adapter = new ArrayAdapter<Chord>(context, R.layout.chorditem, chords) {

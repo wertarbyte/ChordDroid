@@ -27,12 +27,12 @@ import de.wertarbyte.chorddroid.harmony.Chord;
 public class ChordDroid extends Activity implements OnItemSelectedListener, OnClickListener {
 	private List<Instrument> instruments;
 	
-	private static final int TOBASKET = 0;
+	private static final int TONOTEPAD = 0;
 	private static final int TOLIB = 1;
-	private static final int ADDTOBASKET = 2;
+	private static final int JOTDOWN = 2;
 	
-	private static final int CLEARBASKET = 3;
-	private static final int REMOVEFROMBASKET = 4;
+	private static final int CLEARNOTEPAD = 3;
+	private static final int REMOVEFROMNOTEPAD = 4;
 	
 	private static final int CHANGE_VARIANT = 5;
 	
@@ -47,9 +47,9 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 	private ChordView chordView;
 	private TextView t_variant;
 	
-	private ListView l_basket;
+	private ListView l_notes;
 	
-	private ChordBasket basket;
+	private ChordNotepad notepad;
 	
 	private int chord_variant;
 	
@@ -75,7 +75,7 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 			}
 		}
 		
-		basket = new ChordBasket(this, this);
+		notepad = new ChordNotepad(this, this);
 		
 		setContentView(R.layout.chorddroid);
 		flipper = (ViewFlipper) findViewById(R.id.flipper);
@@ -93,8 +93,8 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 		
 		t_variant = (TextView) findViewById(R.id.variant);
 		
-		l_basket = (ListView) findViewById(R.id.basketlist);
-		l_basket.setAdapter(basket.getAdapter());
+		l_notes = (ListView) findViewById(R.id.notepadlist);
+		l_notes.setAdapter(notepad.getAdapter());
 		
 		s_instrument.setOnItemSelectedListener(this);
 		s_root.setOnItemSelectedListener(this);
@@ -104,8 +104,8 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 		
 		// restore old bundle data
 		if (savedInstanceState != null) {
-			if (savedInstanceState.containsKey("basket") ) {
-				basket.fromStringArray(savedInstanceState.getStringArray("basket"));
+			if (savedInstanceState.containsKey("notepad") ) {
+				notepad.fromStringArray(savedInstanceState.getStringArray("notepad"));
 			}
 		}
 		
@@ -113,13 +113,13 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 		chordView.setOnClickListener(this);
 		
 		registerForContextMenu(chordView);
-		registerForContextMenu(l_basket);
+		registerForContextMenu(l_notes);
 	}
 	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putStringArray("basket", basket.asStringArray());
+		outState.putStringArray("notepad", notepad.asStringArray());
 	}
 	
 	public Chord getSelectedChord() {
@@ -165,8 +165,8 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 	
 	public void refresh_shape() {
 		chordView.setShape(null);
-		// refresh the shapes in our basket as well
-		basket.getAdapter().notifyDataSetChanged();
+		// refresh the shapes in our notepad as well
+		notepad.getAdapter().notifyDataSetChanged();
 		t_variant.setText(getSelectedChord().getName() + ": -");
 		List<Shape> shapes = getShapes();
 		if (shapes != null && shapes.size() > 0) {
@@ -199,18 +199,18 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 			for (Shape s : shapes) {
 				menu.add(CHANGE_VARIANT, i++, 1, s.toString());
 			}
-		} else if (v == l_basket) {
-			menu.add(Menu.NONE, REMOVEFROMBASKET, 1, R.string.remove_from_basket);
+		} else if (v == l_notes) {
+			menu.add(Menu.NONE, REMOVEFROMNOTEPAD, 1, R.string.remove_from_notepad);
 		}
 	}
 	
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
-		if (item.getItemId() == REMOVEFROMBASKET) {
+		if (item.getItemId() == REMOVEFROMNOTEPAD) {
 			if (info != null) {
 				// TODO This feels quite hacky, how can I get the source of the context menu?
-				basket.removeChord(info.position);
+				notepad.removeChord(info.position);
 				return true;
 			}
 		}
@@ -225,10 +225,10 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.clear();
 		if (flipper.getDisplayedChild() == 0) {
-			menu.add(Menu.NONE, ADDTOBASKET, 1, R.string.add_to_basket);
-			menu.add(Menu.NONE, TOBASKET, 1, R.string.show_basket);
+			menu.add(Menu.NONE, JOTDOWN, 1, R.string.add_to_notepad);
+			menu.add(Menu.NONE, TONOTEPAD, 1, R.string.show_notepad);
 		} else {
-			menu.add(Menu.NONE, CLEARBASKET, 1, R.string.empty_basket);
+			menu.add(Menu.NONE, CLEARNOTEPAD, 1, R.string.clear_notepad);
 			menu.add(Menu.NONE, TOLIB, 1, R.string.show_library);
 		}
 		return true;
@@ -238,17 +238,17 @@ public class ChordDroid extends Activity implements OnItemSelectedListener, OnCl
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int choice = item.getItemId();
 		switch (choice) {
-		case TOBASKET:
+		case TONOTEPAD:
 			flipper.showNext();
 			return true;
 		case TOLIB:
 			flipper.showPrevious();
 			return true;
-		case ADDTOBASKET:
-			basket.addChord(getSelectedChord());
+		case JOTDOWN:
+			notepad.addChord(getSelectedChord());
 			return true;
-		case CLEARBASKET:
-			basket.clear();
+		case CLEARNOTEPAD:
+			notepad.clear();
 			return true;
 		}
 		return false;

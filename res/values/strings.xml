@@ -4,11 +4,11 @@
 	<string name="select_instrument">Select your instrument</string>
 	<string name="select_transposition">Number of transposition halfsteps:</string>
 	
-	<string name="show_basket">Show basket</string>
+	<string name="show_notepad">Notepad</string>
 	<string name="show_library">Show Library</string>
-	<string name="add_to_basket">Add to basket</string>
-	<string name="empty_basket">Empty basket</string>
-	<string name="remove_from_basket">Remove from basket</string>
+	<string name="add_to_notepad">Jot down</string>
+	<string name="clear_notepad">Clear notepad</string>
+	<string name="remove_from_notepad">Remove from notepad</string>
 	
 	<string name="guitar_standard">Guitar, Standard</string>
 	<string name="guitar_dropd">Guitar, Drop-D</string>
